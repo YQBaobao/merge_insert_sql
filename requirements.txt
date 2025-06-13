@@ -1,0 +1,3 @@
+#Python 3.9.12 x64bit
+PyQt5
+Pyinstaller
