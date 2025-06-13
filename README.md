@@ -2,9 +2,10 @@
 
 ### 简介
 
-合并 SQL INSERT 语句，将单个语句合并成一个使其批量 INSERT,显著提高速度 。支持标准 INSERT 和带字段版本，支持命令行文件/目录参数
+合并 SQL INSERT 语句，将单个语句合并成一个使其批量 INSERT，显著提高速度 。支持标准 INSERT 和带字段版本，支持命令行文件/目录参数
 
 ### 命令行用法
+
 `python .\merge_insert_cmd.py -h`
 
 ```text
@@ -22,3 +23,7 @@ optional arguments:
 
 ```
 
+### GUI用法
+
+直接拖入文件夹或单个sql文件
+![image](/img/1.png)
