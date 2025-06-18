@@ -14,17 +14,14 @@ import os
 
 def read_file_with_encoding(file_path):
     try:
-        # 优先尝试 utf-8
         with open(file_path, 'r', encoding='utf-8') as f:
             return f.read()
     except UnicodeDecodeError:
-        try:
-            # 回退使用 utf-16le
-            with open(file_path, 'r', encoding='utf-16le') as f:
-                return f.read()
-        except Exception as e:
-            print(f"文件无法读取: {file_path}\n错误: {e}")
-            return None
+        with open(file_path, 'r', encoding='utf-16le') as f:
+            return f.read()
+    except Exception as e:
+        print(f"文件无法读取: {file_path}\n错误: {e}")
+        return None
 
 
 def merge_insert_statements_in_file(file_path, output_folder):
@@ -32,7 +29,7 @@ def merge_insert_statements_in_file(file_path, output_folder):
     if content is None:
         return
 
-    # 强化支持带字段、跨行 INSERT INTO
+    # 正则表达式
     insert_pattern = re.compile(
         r'INSERT INTO\s+'
         r'(?:(`(?P<schema>[^`]+)`|(?P<schema2>\w+))\.)?'
@@ -58,7 +55,7 @@ def merge_insert_statements_in_file(file_path, output_folder):
 
     merged_insert = f"INSERT INTO `{table_name}` {field_block} VALUES\n" + ",\n".join(f"({v})" for v in values) + ";\n"
 
-    # 删除所有 INSERT 语句（避免空行问题）
+    # 删除所有 INSERT 语句
     new_parts = []
     last_end = 0
     for m in all_matches:
@@ -100,7 +97,7 @@ def process_path(path, output_folder='merged_sql'):
             if os.path.isfile(full_path) and file.lower().endswith('.sql'):
                 merge_insert_statements_in_file(full_path, output_folder)
     else:
-        print(f"❌ 无效路径或不支持的文件类型：{path}")
+        print(f"无效路径或不支持的文件类型：{path}")
 
 
 if __name__ == '__main__':
